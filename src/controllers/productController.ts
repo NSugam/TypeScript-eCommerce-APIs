@@ -12,6 +12,7 @@ exports.getAllProducts = async (req: any, res: any, next: any) => {
 // Add a new product
 exports.addProduct = async (req: any, res: any, next: any) => {
     const { title, price, description, stock, sku } = req.body;
+
     const productData = await productEntity.findOne({ where: { sku: sku } })
     if (productData)
         res.status(409).json({ message: "Product already exist", success: false });
