@@ -1,11 +1,11 @@
+require('dotenv').config();
+var axios = require('axios');
 import { userEntity } from "../entity/userEntity";
 
 var jwt = require('jsonwebtoken');
-require('dotenv').config();
-
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const checkAuthentication = async (req: any, res: any, next: any, checkAdmin = false) => {
+const JWTAuthentication = async (req: any, res: any, next: any, checkAdmin = false) => {
     try {
         const token = req.cookies._CH_Test;
 
@@ -36,7 +36,42 @@ const checkAuthentication = async (req: any, res: any, next: any, checkAdmin = f
     }
 };
 
-const Authenticated = (req: any, res: any, next: any) => checkAuthentication(req, res, next);
-const CheckAdmin = (req: any, res: any, next: any) => checkAuthentication(req, res, next, true);
+const googleAuth = async (req: any, res: any, next:any) => {
+    try {
+        const code = req.headers.authorization;
+        if (!code) return res.status(400).json({ message: 'Authorization code missing' });
 
-module.exports = { Authenticated, CheckAdmin };
+        const response = await axios.post(
+            'https://oauth2.googleapis.com/token',
+            {
+                code,
+                client_id: process.env.GOOGLE_CLIENT_ID,
+                client_secret: process.env.GOOGLE_CLIENT_SECRET,
+                redirect_uri: 'postmessage',
+                grant_type: 'authorization_code'
+            }
+        );
+        const accessToken = response.data.access_token;
+
+        const userResponse = await axios.get(
+            'https://www.googleapis.com/oauth2/v3/userinfo',
+            {
+                headers: { Authorization: `Bearer ${accessToken}` }
+            }
+        );
+
+        const userDetails = userResponse.data;
+        req.user = userDetails;
+        next();
+        res.status(200).json({ message: 'Authentication successful', user: userDetails });
+        
+    } catch (error: any) {
+        console.error('Authentication error:', error);
+        res.status(500).json({ message: 'Authentication failed' });
+    }
+};
+
+const Authenticated = (req: any, res: any, next: any) => JWTAuthentication(req, res, next);
+const CheckAdmin = (req: any, res: any, next: any) => JWTAuthentication(req, res, next, true);
+
+module.exports = { Authenticated, CheckAdmin, googleAuth };

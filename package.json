@@ -17,6 +17,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/memory-cache": "^0.2.6",
     "@types/pg": "^8.11.11",
+    "axios": "^1.8.3",
     "bcryptjs": "^3.0.2",
     "concurrently": "^9.1.2",
     "cookie-parser": "^1.4.7",
