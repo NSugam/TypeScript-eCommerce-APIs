@@ -1,14 +1,16 @@
 var express = require("express")
 var router = express.Router()
 
-var { Authenticated, CheckAdmin } = require('../Middlewares/auth')
+var { checkAuth } = require('../Middlewares/auth')
+
+var { permissionMiddleware } = require('../Middlewares/permissions')
 
 const cartController = require("../controllers/cartController");
 
-router.get('/all', Authenticated, cartController.getCartItems)
+router.get('/all', checkAuth, permissionMiddleware('read'), cartController.getCartItems)
 
-router.post('/add', Authenticated, cartController.addToCart)
+router.post('/add', checkAuth, permissionMiddleware('add'), cartController.addToCart)
 
-router.post('/--qty', Authenticated, cartController.decreaseQty)
+router.post('/--qty', checkAuth, permissionMiddleware('decrease'), cartController.decreaseQty)
 
 module.exports = router;

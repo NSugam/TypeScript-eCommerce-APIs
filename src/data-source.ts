@@ -5,6 +5,7 @@ import { userEntity } from "./entity/userEntity";
 import { productEntity } from "./entity/productEntity";
 import { cartEntity } from "./entity/cartEntity";
 import { orderEntity } from "./entity/orderEntity";
+import { permissionEntity } from "./entity/permissionEntity";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -16,7 +17,7 @@ export const AppDataSource = new DataSource({
 
   synchronize: true,
   logging: false,
-  entities: [userEntity, productEntity, cartEntity, orderEntity],
+  entities: [userEntity, productEntity, cartEntity, orderEntity, permissionEntity],
   migrations: [__dirname + "/migration/*.ts"],
   subscribers: [],
 });

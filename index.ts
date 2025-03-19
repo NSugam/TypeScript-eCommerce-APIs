@@ -1,4 +1,5 @@
 import { AppDataSource } from "./src/data-source";
+import { permissionEntity } from "./src/entity/permissionEntity";
 
 require('dotenv').config();
 const express = require("express")
@@ -21,6 +22,12 @@ app.use(cookieParser())
 app.listen(PORT, async () => {
     console.log(`\nServer Running OK @ ${PORT}...`)
 });
+
+//for getting roles
+app.get('/roles', async (req:any, res:any)=> {
+    const permissions:any = await permissionEntity.find()
+    res.status(200).send({message:"All router permissions", success:true, permissions})
+})
 
 //for Users
 app.use('/api/user', require('./src/routes/user'))

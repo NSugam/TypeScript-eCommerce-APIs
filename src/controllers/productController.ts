@@ -15,11 +15,11 @@ exports.addProduct = async (req: any, res: any, next: any) => {
 
     const productData = await productEntity.findOne({ where: { sku: sku } })
     if (productData)
-        res.status(409).json({ message: "Product already exist", success: false });
+        return res.status(409).json({ message: "Product already exist", success: false });
 
     try {
         await productEntity.create({ title, price, description, stock, sku }).save();
-        res.status(200).json({ message: "Product added successfully", success: true });
+        return res.status(200).json({ message: "Product added successfully", success: true });
 
     } catch (error) { next(error) }
 }
