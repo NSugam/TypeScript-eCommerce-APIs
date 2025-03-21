@@ -6,8 +6,11 @@ var jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const checkAuth = async (req: any, res: any, next: any) => {
+    const route = req.originalUrl.replace(/^\/api\//, "").split("/");
+    if (route[0] == 'user' && (route[1] == 'register' || route[1] == 'login'))
+        next()
+
     try {
-        console.log("here")
         const token = req.cookies._CH_Test;
         if (!token) return res.status(401).json({ message: "Please Login to Continue", success: false });
 

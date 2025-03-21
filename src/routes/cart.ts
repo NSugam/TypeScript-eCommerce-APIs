@@ -1,16 +1,12 @@
-var express = require("express")
-var router = express.Router()
-
-var { checkAuth } = require('../Middlewares/auth')
-
-var { permissionMiddleware } = require('../Middlewares/permissions')
+import { Router } from "express";
+const router = Router();
 
 const cartController = require("../controllers/cartController");
 
-router.get('/all', checkAuth, permissionMiddleware(), cartController.getCartItems)
+router.get('/all', cartController.getCartItems)
 
-router.post('/add', checkAuth, permissionMiddleware(), cartController.addToCart)
+router.post('/add', cartController.addToCart)
 
-router.put('/--qty', checkAuth, permissionMiddleware(), cartController.decreaseQty)
+router.put('/--qty', cartController.decreaseQty)
 
 module.exports = router;

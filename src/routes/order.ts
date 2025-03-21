@@ -1,17 +1,14 @@
-var express = require("express")
-var router = express.Router()
-
-var { checkAuth } = require('../Middlewares/auth')
-var { permissionMiddleware } = require('../Middlewares/permissions')
+import { Router } from "express";
+const router = Router();
 
 const orderController = require("../controllers/orderController");
 
-router.get('/all', checkAuth, permissionMiddleware(), orderController.getAllOrders)
+router.get('/all', orderController.getAllOrders)
 
-router.post('/place', checkAuth,permissionMiddleware(), orderController.placeOrder)
+router.post('/place', orderController.placeOrder)
 
-router.put('/update', checkAuth,permissionMiddleware(), orderController.updateOrder)
+router.put('/update', orderController.updateOrder)
 
-router.delete('/delete', checkAuth,permissionMiddleware(), orderController.deleteOrder)
+router.delete('/delete', orderController.deleteOrder)
 
 module.exports = router;

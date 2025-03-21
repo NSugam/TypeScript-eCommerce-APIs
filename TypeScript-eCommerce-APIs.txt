@@ -1,0 +1,22 @@
+>> For Users
+POST /api/user/register (username, phone, email, password, role)
+POST /api/user/login (email, password)
+GET /api/user/profile
+GET /api/user/logout
+
+>> For Products
+GET /api/product/all
+POST /api/product/add (title, price, description, stock, sku)
+PUT /api/product/update (productId)
+DELETE /api/product/delete (productId)
+
+>> For Cart
+GET /api/cart/all
+POST /api/cart/add (productId, qty)
+PUT /api/cart/--qty (productId, qty)
+
+>> For Orders
+GET /api/order/all
+POST /api/order/place (productId, qty, status)
+PUT /api/order/update (orderId)
+DELETE /api/order/delete (orderId)
