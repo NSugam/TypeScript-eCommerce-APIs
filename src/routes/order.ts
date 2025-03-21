@@ -6,12 +6,12 @@ var { permissionMiddleware } = require('../Middlewares/permissions')
 
 const orderController = require("../controllers/orderController");
 
-router.get('/all', checkAuth, permissionMiddleware('read'), orderController.getAllOrders)
+router.get('/all', checkAuth, permissionMiddleware(), orderController.getAllOrders)
 
-router.post('/place', checkAuth,permissionMiddleware('place'), orderController.placeOrder)
+router.post('/place', checkAuth,permissionMiddleware(), orderController.placeOrder)
 
-router.put('/update', checkAuth,permissionMiddleware('update'), orderController.updateOrder)
+router.put('/update', checkAuth,permissionMiddleware(), orderController.updateOrder)
 
-router.delete('/delete', checkAuth,permissionMiddleware('delete'), orderController.deleteOrder)
+router.delete('/delete', checkAuth,permissionMiddleware(), orderController.deleteOrder)
 
 module.exports = router;

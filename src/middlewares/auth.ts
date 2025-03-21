@@ -7,6 +7,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 const checkAuth = async (req: any, res: any, next: any) => {
     try {
+        console.log("here")
         const token = req.cookies._CH_Test;
         if (!token) return res.status(401).json({ message: "Please Login to Continue", success: false });
 

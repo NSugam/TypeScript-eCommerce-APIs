@@ -11,12 +11,12 @@ var { checkAuth } = require('../Middlewares/auth')
 router.get('/all', productController.getAllProducts)
 
 router.post('/add', validator.body(validate.addProductSchema),
-    checkAuth, permissionMiddleware('add'), productController.addProduct)
+    checkAuth, permissionMiddleware(), productController.addProduct)
 
 router.put('/update', validator.body(validate.updateProductSchema),
-    checkAuth, permissionMiddleware('update'), productController.updateProduct)
+    checkAuth, permissionMiddleware(), productController.updateProduct)
 
 router.delete('/delete', validator.body(validate.deleteProductSchema),
-    checkAuth, permissionMiddleware('delete'), productController.deleteProduct)
+    checkAuth, permissionMiddleware(), productController.deleteProduct)
 
 module.exports = router;

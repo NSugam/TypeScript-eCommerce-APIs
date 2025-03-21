@@ -1,5 +1,4 @@
 import { AppDataSource } from "./src/data-source";
-import { permissionEntity } from "./src/entity/permissionEntity";
 
 require('dotenv').config();
 const express = require("express")
@@ -9,6 +8,8 @@ const PORT = process.env.PORT
 const app = express()
 
 const errorMiddleware = require('./src/middlewares/errorMiddleware')
+const { permissionMiddleware } = require('./src/middlewares/permissions')
+var { checkAuth } = require('./src/middlewares/auth')
 
 //DB Initialization
 AppDataSource.initialize()
@@ -23,23 +24,17 @@ app.listen(PORT, async () => {
     console.log(`\nServer Running OK @ ${PORT}...`)
 });
 
-//for getting roles
-app.get('/roles', async (req:any, res:any)=> {
-    const permissions:any = await permissionEntity.find()
-    res.status(200).send({message:"All router permissions", success:true, permissions})
-})
-
 //for Users
 app.use('/api/user', require('./src/routes/user'))
 
 //for Product
-app.use('/api/product', require('./src/routes/product'))
+app.use('/api/product', checkAuth, permissionMiddleware(), require('./src/routes/product'))
 
 //for Cart
-app.use('/api/cart', require('./src/routes/cart'))
+app.use('/api/cart', checkAuth, permissionMiddleware(), require('./src/routes/cart'))
 
 //for Order
-app.use('/api/order', require('./src/routes/order'))
+app.use('/api/order', checkAuth, permissionMiddleware(), require('./src/routes/order'))
 
 // global error handler
 app.use(errorMiddleware)

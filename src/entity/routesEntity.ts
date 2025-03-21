@@ -7,12 +7,12 @@ import {
 
 import { rolePermissionEntity } from './rolePermissionEntity';
 
-@Entity({ name: "permissionTable" })
-export class permissionEntity extends BaseEntity {
+@Entity({ name: "routesTable" })
+export class routesEntity extends BaseEntity {
 
-    @PrimaryColumn({ type:'varchar' })
+    @PrimaryColumn({type:'varchar' })
     name: string;
 
-    @OneToMany(() => rolePermissionEntity, (rolePermission) => rolePermission.permission)
+    @OneToMany(() => rolePermissionEntity, (rolePermission) => rolePermission.route)
     rolePermissions: rolePermissionEntity[];
 }
