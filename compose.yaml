@@ -1,0 +1,42 @@
+services:
+  server:
+    build:
+      context: .
+    volumes:
+    - .:/app
+    - /app/node_modules
+    environment:
+      NODE_ENV: production
+      PORT: 9095
+      JWT_SECRET: abcdefghi1475622
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: 123
+      REDIS_URL: redis://192.168.10.165:6379
+    ports:
+      - "9095:9095"
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres
+    restart: always
+    environment: 
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: Application
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:

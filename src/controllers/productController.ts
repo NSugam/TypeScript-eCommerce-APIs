@@ -1,13 +1,23 @@
 import { productEntity } from "../entity/productEntity";
+import { redisClient } from "../../redisClient";
 
 // Get all products
 exports.getAllProducts = async (req: any, res: any, next: any) => {
     try {
+        const cachedData = await redisClient.get("productData");
+        if (cachedData) {
+            return res.status(200).json({
+                message: "All Products Data (Cached)",
+                success: true,
+                all_products: JSON.parse(cachedData)
+            });
+        }
         const products = await productEntity.find();
-        res.status(200).json({ message: "All Products Data", success: true, products });
+        await redisClient.set("productData", JSON.stringify(products), { EX: 3600 })//1hr
+        res.status(200).json({ message: "All Products Data", success: true, products })
 
     } catch (error) { next(error) }
-}
+};
 
 // Add a new product
 exports.addProduct = async (req: any, res: any, next: any) => {
@@ -19,6 +29,8 @@ exports.addProduct = async (req: any, res: any, next: any) => {
 
     try {
         await productEntity.create({ title, price, description, stock, sku }).save();
+        const products = await productEntity.find()
+        await redisClient.set("productData", JSON.stringify(products), { EX: 3600 })
         return res.status(200).json({ message: "Product added successfully", success: true });
 
     } catch (error) { next(error) }

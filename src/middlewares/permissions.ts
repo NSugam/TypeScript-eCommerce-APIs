@@ -3,7 +3,8 @@ import { rolePermissionEntity } from "../entity/rolePermissionEntity";
 export const permissionMiddleware = () => {
     return async (req: any, res: any, next: any) => {
         const role = req.user?.role || 'user'
-        const route = req.originalUrl.replace(/^\/api\//, "").split("/")[0];
+        const url = req.originalUrl.split('?')[0]; // Remove query string
+        const route = url.replace(/^\/api\//, "").split("/")[0]; // Remove /api/ prefix and get the route
         const action = req.method.toLowerCase()
 
         if (!role)
@@ -17,9 +18,9 @@ export const permissionMiddleware = () => {
             },
             relations: ["role", "route", "permission"]
         });
-        
+
         if (!hasPermission)
-            return res.status(403).json({ message: "Permission Denied", success: false });
+            return res.status(403).json({ message: "Permission Denied", route: route, success: false });
 
         next();
 

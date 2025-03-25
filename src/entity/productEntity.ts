@@ -25,5 +25,4 @@ export class productEntity extends BaseEntity {
 
   @Column({ nullable: false, type: 'varchar', unique:true })
   sku: string;
-
 }

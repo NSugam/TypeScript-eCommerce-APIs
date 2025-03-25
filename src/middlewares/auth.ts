@@ -5,10 +5,15 @@ import { userEntity } from "../entity/userEntity";
 var jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET;
 
+const PUBLIC_ROUTES = [
+    "user/register",
+    "user/login",
+    "product/all"
+]
+
 const checkAuth = async (req: any, res: any, next: any) => {
-    const route = req.originalUrl.replace(/^\/api\//, "").split("/");
-    if (route[0] == 'user' && (route[1] == 'register' || route[1] == 'login'))
-        next()
+    const route = await req.originalUrl.replace(/^\/api\//, "").split("?")
+    if (PUBLIC_ROUTES.includes(route.toString())) return next();
 
     try {
         const token = req.cookies._CH_Test;

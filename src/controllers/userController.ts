@@ -23,7 +23,6 @@ exports.userRegister = async (req: any, res: any, next: any) => {
         role: role
     }).save()
     res.status(200).json({ message: "Account Created", success: true })
-
 }
 
 exports.userLogin = async (req: any, res: any, next: any) => {
@@ -39,8 +38,11 @@ exports.userLogin = async (req: any, res: any, next: any) => {
 
     res.cookie('_CH_Test', token, {
         httpOnly: true,
+        // secure: process.env.NODE_ENV === 'production',
+        secure: false,
+        sameSite: 'None',
         expires: new Date(new Date().getTime() + 60 * 60 * 1000), //1hr
     });
 
-    res.status(200).json({ message: "Login Success", success: true })
+    return res.status(200).json({ message: "Login Success", success: true })
 }
