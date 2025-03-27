@@ -17,12 +17,12 @@ AppDataSource.initialize().then(() => console.log("Connected to Postgres")).catc
 
 //Middlewares
 app.use(express.json())
-app.use(cors({ credentials: true, origin: ['http://localhost:3000','http://192.168.10.165:9095'] }));
+app.use(cors({ credentials: true, origin: ['http://localhost:3000', 'http://192.168.10.165:9095'] }));
 app.use(cookieParser())
 app.use(checkAuth, permissionMiddleware())
 
 app.listen(PORT, "0.0.0.0", () => {
-    console.log(`\nServer Running OK @ ${PORT}...`);
+    console.log(process.env.NODE_ENV, `Server Running OK @ ${PORT}...`);
 });
 
 

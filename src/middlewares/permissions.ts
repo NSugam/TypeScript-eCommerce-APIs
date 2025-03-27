@@ -7,6 +7,8 @@ export const permissionMiddleware = () => {
         const route = url.replace(/^\/api\//, "").split("/")[0]; // Remove /api/ prefix and get the route
         const action = req.method.toLowerCase()
 
+        if (route == 'permissions') return next()
+
         if (!role)
             return res.status(403).json({ message: "User's role not available", success: false });
 

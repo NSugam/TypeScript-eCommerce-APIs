@@ -10,9 +10,15 @@ import { rolePermissionEntity } from "./entity/rolePermissionEntity";
 import { roleEntity } from "./entity/roleEntity";
 import { routesEntity } from "./entity/routesEntity";
 
+if (process.env.NODE_ENV === 'production') {
+  var dbHost: any = process.env.DB_HOST_PROD
+} else {
+  var dbHost: any = process.env.DB_HOST
+}
+
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: process.env.DB_HOST,
+  host: dbHost,
   port: Number(process.env.DB_PORT),
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,

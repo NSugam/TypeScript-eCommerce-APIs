@@ -10,6 +10,8 @@ router.use('/cart', require('./cart'))
 
 router.use('/order', require('./order'))
 
+router.use('/notification', require('./fcm-notification'))
+
 router.get('/permissions', async (req: any, res: any) => {
     const {role, route, action} = req.query;
     const permissions = await rolePermissionEntity.find({

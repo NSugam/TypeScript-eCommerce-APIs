@@ -8,11 +8,12 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const PUBLIC_ROUTES = [
     "user/register",
     "user/login",
-    "product/all"
+    "product/all",
+    "permissions"
 ]
 
 const checkAuth = async (req: any, res: any, next: any) => {
-    const route = await req.originalUrl.replace(/^\/api\//, "").split("?")
+    const route = await req.originalUrl.replace(/^\/api\//, "").split("?")[0]
     if (PUBLIC_ROUTES.includes(route.toString())) return next();
 
     try {
