@@ -15,14 +15,14 @@ exports.userRegister = async (req: any, res: any, next: any) => {
 
     const salt = await bcrypt.genSalt(10);
     const secPass = await bcrypt.hash(password, salt)
-    userEntity.create({
+    await userEntity.create({
         username: username,
         email: email,
         phone: phone,
         password: secPass,
         role: role
     }).save()
-    res.status(200).json({ message: "Account Created", success: true })
+    return res.status(200).json({ message: "Account Created", success: true })
 }
 
 exports.userLogin = async (req: any, res: any, next: any) => {

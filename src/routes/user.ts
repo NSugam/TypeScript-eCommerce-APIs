@@ -8,7 +8,7 @@ var validate = require('../middlewares/validate')
 
 var { googleAuth, refreshGoogleToken } = require('../middlewares/googleAuth')
 
-router.post('/register',validator.body(validate.registerSchema), userController.userRegister)
+router.post('/register', userController.userRegister)
 
 router.post('/login',validator.body(validate.loginSchema), userController.userLogin)
 
